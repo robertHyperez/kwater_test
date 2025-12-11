@@ -73,6 +73,9 @@ const MODEL_URL6 = '/Stage3.glb'; // 🚨 3D 모델 경로 확인 🚨
 const MODEL_URL7 = '/Stage4.glb'; // 🚨 3D 모델 경로 확인 🚨
 const MODEL_URL8 = '/Stage5.glb'; // 🚨 3D 모델 경로 확인 🚨
 
+const MODEL_URL9 = '/Solids.glb'; // 🚨 3D 모델 경로 확인 🚨
+const MODEL_URL10 = '/Stage1_1.glb'; // 🚨 3D 모델 경로 확인 🚨
+
 
 
 
@@ -721,7 +724,7 @@ function App() {
     // 모델 로드 함수 (이하 동일)
     function loadModel() {
       // 로드해야 할 모든 모델 URL 배열
-      const modelUrls = [MODEL_URL, MODEL_URL2, MODEL_URL3, MODEL_URL4, MODEL_URL5, MODEL_URL6, MODEL_URL7, MODEL_URL8];
+      const modelUrls = [MODEL_URL, MODEL_URL2, MODEL_URL3, MODEL_URL4, MODEL_URL5, MODEL_URL6, MODEL_URL7, MODEL_URL8, MODEL_URL9, MODEL_URL10];
       const gltfLoader = new GLTFLoader();
 
       if (isLoadingRef.current) {
