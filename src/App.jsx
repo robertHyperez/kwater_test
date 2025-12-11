@@ -693,7 +693,7 @@ function App() {
 
       // }
 
-      const dt = delta; // 초당 60프레임 (THREE.Clock의 delta를 사용하는 것이 더 정확하지만, 기존 로직 유지를 위해 dt 사용)
+      const dt = 1/60; // 초당 60프레임 (THREE.Clock의 delta를 사용하는 것이 더 정확하지만, 기존 로직 유지를 위해 dt 사용)
       animationMixersRef.current.forEach(mixer => {
         let time = mixer.time + dt;
         mixer.setTime(time);
@@ -715,7 +715,7 @@ function App() {
 
       setTimeout(function () {
         requestAnimationFrame(animate);
-      }, 1000 * delta);
+      }, 1000 /60);
     }
 
     // 모델 로드 함수 (이하 동일)
@@ -1278,7 +1278,6 @@ function App() {
             <div id="title-1"
               style={{
                 transformOrigin: 'top left',
-                letterSpacing: '-3.794px',
                 fontSize: '60px',
                 fontFamily: 'Pretendard',
                 fontWeight: '700',
