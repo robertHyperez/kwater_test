@@ -680,43 +680,41 @@ function App() {
 
 
     // 애니메이션 루프
+    // ... (App.jsx 내부의 animate 함수)
+
     function animate() {
+      // 1. requestAnimationFrame 재귀 호출 (setTimeout 제거)
+      animationFrameId = requestAnimationFrame(animate); 
+
+      // 2. Clock에서 실제 흐른 시간(deltaTime)을 가져옵니다.
       const delta = clockRef.current.getDelta();
 
-      // if (animationMixerRef.current) {
-      //   const mixer = animationMixerRef.current;
-      //   //mixer.update(1000 / 60);
-
-      //   const dt = 1 / 60; // export된 애니메이션 fps
-      //   let time = mixer.time + dt;
-      //   mixer.setTime(time);
-
-      // }
-
-      const dt = 1 / 60; // 초당 60프레임 (THREE.Clock의 delta를 사용하는 것이 더 정확하지만, 기존 로직 유지를 위해 dt 사용)
+      // 3. 애니메이션 믹서를 delta 값으로 업데이트
       animationMixersRef.current.forEach(mixer => {
-        let time = mixer.time + dt;
-        mixer.setTime(time);
+        // mixer.update(deltaTime)을 사용합니다.
+        // 이는 프레임 속도와 관계없이 애니메이션이 일정한 시간 속도로 재생되게 합니다.
+        mixer.update(delta);
       });
+
 
       if (controlsRef.current) {
         controlsRef.current.update();
       }
 
       if (rendererRef.current && sceneRef.current && cameraRef.current) {
-        //rendererRef.current.render(sceneRef.current, cameraRef.current);
-
         rendererRef.current.clear();
         rendererRef.current.render(sceneRef.current, cameraRef.current);
       }
 
       updateHotspots();
-      //animationFrameId = requestAnimationFrame(animate);
 
-      setTimeout(function () {
-        requestAnimationFrame(animate);
-      }, 1000 / 60);
+      // 4. 이전의 setTimeout + rAF 로직은 제거합니다.
+      // setTimeout(function () {
+      //   requestAnimationFrame(animate);
+      // }, 1000 / 60);
     }
+
+// ...
 
     // 모델 로드 함수 (이하 동일)
     function loadModel() {
