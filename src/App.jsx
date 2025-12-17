@@ -25,7 +25,7 @@ const hotspotsData = [
   { id: 'hotspot-2-1', level2Id: '2-1', label: '전해조', position: new THREE.Vector3(2.508639917, 1.02077155, 1.232338784) },
   { id: 'hotspot-2-2', level2Id: '2-2', label: '펌프', position: new THREE.Vector3(0.2125399929, 0.7042710693, 0.5778873445) },
   { id: 'hotspot-3-1', level2Id: '3-1', label: '입자성 오염물질 처리장치', position: new THREE.Vector3(-2.619579913, 0.7285911062, 0.1746977963) },
-  { id: 'hotspot-3-2', level2Id: '3-2', label: '처리수', position: new THREE.Vector3(-1.619579913, 0.7285911062, 0.1746977963) },
+  { id: 'hotspot-3-2', level2Id: '3-2', label: '처리수', position: new THREE.Vector3(4.648379845	,2.17993331	,0.5868613408) },
   //{ id: 'hotspot-3-1', level2Id: '3-1', label: '원점', position: new THREE.Vector3(0, 0, 0) },
 
 ];
@@ -48,7 +48,7 @@ const targetDetail = {
     src: '/images/제어반.png',
   },
   '1-2': {
-    detail: '처리장치로 유입되는 공정수 유량을 측정하여\n전체공정을 안정적으로 운전하는 역할을 수행한다.',
+    detail: '처리장치로 유입되는 공정수 유량을 측정하여\n전체공정을 안정적으로 운전하는 역할을\n수행한다.',
     src: '/images/유량계.png',
   },
   '1-3': {
@@ -66,9 +66,10 @@ const targetDetail = {
   '3-1': {
     detail: '폐수에 녹지 않고 입자형태로 떠다니는 오염물질들을 제거하는 장치이다. 대개 화학약품을 통해 작은 입자들을 큰 입자로 응집한 후에 침전 혹은 부상하여 필터 등으로 여과하는 방식을 사용한다.\n\n입자성 오염물질 처리장치에는 침전, 용존공기부상(DAF),\n여과장치 등이 있다.',
     src: '/images/img-입자성 오염물질 처리장치.png',
+    src2: '/images/입자성 처리장치 추가사진.png',
   },
   '3-2': {
-    detail: '고객이 요구하는 수준이나 법적 기준치 이하로 처리된 물은 배출되어 공정수로 이용되거나 방류된다.',
+    detail: '고객이 요구하는 수준이나 법적 기준치 이하로\n처리된 물은 배출되어 공정수로 이용되거나 방류된다.',
     src: '/images/처리수.png',
   },
 };
@@ -117,7 +118,7 @@ function App() {
 
   const main_offsetX = -0.1;
   const main_offsetY = -0.2;
-  const detail_offsetX = 0.1;
+  const detail_offsetX = 0;
   const detail_offsetY = -0;
 
   const isLoadingRef = useRef(false);
@@ -505,7 +506,7 @@ function App() {
 
       const newControlsTarget = worldTarget;
 
-      const targetZoomDistance = 0.5;
+      const targetZoomDistance = 0.3;
 
       const newCameraPosition = new THREE.Vector3()
         .copy(newControlsTarget)
@@ -1232,6 +1233,47 @@ function App() {
 
         </div>
 
+        <div className="bottom-right-container"
+
+          style={{
+            display: 'absolute',
+            transform: `scale(${ratio / 1.0})`,
+            transformOrigin: 'bottom right',
+            display: 'flex',
+            flexDirection: 'column',
+            bottom: '36px',
+            right : '72px',
+            position: 'absolute',
+            userSelect: 'none',
+            pointerEvents: 'none',
+            width: '296px',
+            height: 'auto',
+
+          }}
+        >
+          <div id="guide-image3"
+            
+            style={{
+              transformOrigin: 'bottom right',
+              zIndex: '5',
+              position: 'absolute',
+            }}
+          >
+            <img
+              src="/images/범례.png"
+              alt=""
+              style={{
+                width: '296px',
+                height: 'auto',
+                pointerEvents: "none",
+
+              }}
+            />
+          </div>
+
+
+        </div>
+
         <div className="center-container"
           // onClick={hideCenterContainer} 👈 이 부분 제거
           style={{
@@ -1340,7 +1382,7 @@ function App() {
               }}
             >
               <span className='title-3-check'>오염수 유입</span>부터 <span className='title-3-check'>처리수 배출</span>까지<br />
-              NE-Series의 처리 공정을 만나보세요!
+              친환경 고도 수처리 시스템을 만나보세요!
             </div>
 
             <div id="title-1-image"
@@ -1412,7 +1454,7 @@ function App() {
               width:
                 selectedHotspot?.level2Id !== '2-1' &&
                   selectedHotspot?.level2Id !== '3-1'
-                  ? '378px'
+                  ? '448px'
                   : '448px',
               backgroundColor: 'white',
               borderRadius: '32px 0px 32px 32px',
@@ -1473,7 +1515,14 @@ function App() {
                     <img
                       src={targetDetail[selectedHotspot.level2Id].src}
 
-                      style={{ width: '100%', height: 'auto', paddingTop: '24px', }}
+                      style={{ width: '100%', height: 'auto', marginTop: '24px', borderRadius: '12px', }}
+                    />
+                  )}
+                  {targetDetail[selectedHotspot.level2Id].src2 && (
+                    <img
+                      src={targetDetail[selectedHotspot.level2Id].src2}
+
+                      style={{ width: '100%', height: 'auto', marginTop: '24px', }}
                     />
                   )}
                 </>
