@@ -23,9 +23,9 @@ const hotspotsData = [
   { id: 'hotspot-1-2', level2Id: '1-2', label: '유량계', label2: '유량계', position: new THREE.Vector3(2.352759922, 2.940494464, 1.268134725) },
   { id: 'hotspot-1-3', level2Id: '1-3', label: '정류기', label2: '정류기', position: new THREE.Vector3(3.338999889, 2.791274238, 1.341697484) },
   { id: 'hotspot-2-1', level2Id: '2-1', label: '전해조', label2: '전해조', position: new THREE.Vector3(2.508639917, 1.02077155, 1.232338784) },
-  { id: 'hotspot-2-2', level2Id: '2-2', label: '펌프',  label2: '펌프', position: new THREE.Vector3(0.2125399929, 0.7042710693, 0.5778873445) },
+  { id: 'hotspot-2-2', level2Id: '2-2', label: '펌프', label2: '펌프', position: new THREE.Vector3(0.2125399929, 0.7042710693, 0.5778873445) },
   { id: 'hotspot-3-1', level2Id: '3-1', label: '입자성 오염물질 처리장치', label2: '입자성 오염물질 처리장치(응집, 여과)', position: new THREE.Vector3(-2.619579913, 0.7285911062, 0.1746977963) },
-  { id: 'hotspot-3-2', level2Id: '3-2', label: '처리수', label2: '처리수', position: new THREE.Vector3(4.648379845	,2.17993331	,0.5868613408) },
+  { id: 'hotspot-3-2', level2Id: '3-2', label: '처리수', label2: '처리수', position: new THREE.Vector3(4.648379845, 2.17993331, 0.5868613408) },
   //{ id: 'hotspot-3-1', level2Id: '3-1', label: '원점', position: new THREE.Vector3(0, 0, 0) },
 
 ];
@@ -38,7 +38,19 @@ const targetViews = {
   '2-1': { radius: 0.554, phi: 69.97, theta: 63.73 }, // 전해조 예시
   '2-2': { radius: 0.452, phi: 41.01, theta: 19.39 }, // 펌프 예시
   '3-1': { radius: 0.647, phi: 66.58, theta: 1.36 }, // 원점 예시
-  '3-2': { radius: 0.647, phi: 66.58, theta: 1.36 }, // 원점 예시
+  '3-2': { radius: 0.647, phi: 66.58, theta: 1.36 }, // 처리수
+};
+
+//kys
+const targetViews2 = {
+  // level2Id: { radius: Number, phi: Number (deg), theta: Number (deg) }
+  '1-1': { detail_offsetX: 0.03, detail_offsetY: 0.1, }, // 제어반 예시
+  '1-2': { detail_offsetX: 0.03, detail_offsetY: 0.1, }, // 유량계 예시
+  '1-3': { detail_offsetX: 0.03, detail_offsetY: 0.1, }, // 정류기 예시
+  '2-1': { detail_offsetX: 0.03, detail_offsetY: -0.1, }, // 전해조 예시
+  '2-2': { detail_offsetX: 0.03, detail_offsetY: -0.1, }, // 펌프 예시
+  '3-1': { detail_offsetX: 0.2, detail_offsetY: -0.1, }, // 원점 예시
+  '3-2': { detail_offsetX: -0.1, detail_offsetY: 0.1, }, // 처리수
 };
 
 const targetDetail = {
@@ -65,7 +77,7 @@ const targetDetail = {
   },
   '3-1': {
     detail: '폐수에 녹지 않고 입자형태로 떠다니는 오염물질들을 제거하는 장치이다. 대개 화학약품을 통해 작은 입자들을 큰 입자로 응집한 후에 침전 혹은 부상하여 필터 등으로 여과하는 방식을 사용한다.',
-    detail2 : '입자성 오염물질 처리장치에는 침전, 용존공기부상(DAF),\n여과장치 등이 있다.',
+    detail2: '입자성 오염물질 처리장치에는 침전, 용존공기부상(DAF),\n여과장치 등이 있다.',
     src: '/images/img-입자성 오염물질 처리장치.png',
     src2: '/images/입자성 처리장치 추가사진.png',
   },
@@ -87,6 +99,8 @@ const MODEL_URL8 = '/Stage5.glb'; // 🚨 3D 모델 경로 확인 🚨
 
 const MODEL_URL9 = '/Solids.glb'; // 🚨 3D 모델 경로 확인 🚨
 const MODEL_URL10 = '/Stage1_1.glb'; // 🚨 3D 모델 경로 확인 🚨
+
+const MODEL_URL11 = '/Title.glb'; // 🚨 3D 모델 경로 확인 🚨
 
 
 
@@ -117,10 +131,11 @@ function App() {
   const rightPanelRef = useRef(null);      // right-panel Ref
   const bottomContainerRef = useRef(null);
 
+  //kys
   const main_offsetX = -0.1;
   const main_offsetY = -0.2;
-  const detail_offsetX = 0;
-  const detail_offsetY = -0;
+  const detail_offsetX = 0.03;
+  const detail_offsetY = 0.1;
 
   const isLoadingRef = useRef(false);
 
@@ -153,7 +168,7 @@ function App() {
 
   const [showCenterContainer, setShowCenterContainer] = useState(true);
 
-  const lottieInstanceRef = useRef(null); 
+  const lottieInstanceRef = useRef(null);
   // 🌟 Lottie 애니메이션을 담을 DOM 요소의 Ref 🌟
   const lottieContainerRef = useRef(null);
 
@@ -314,8 +329,8 @@ function App() {
   const hideLoader = () => {
 
     if (lottieInstanceRef.current) {
-        lottieInstanceRef.current.destroy();
-        lottieInstanceRef.current = null;
+      lottieInstanceRef.current.destroy();
+      lottieInstanceRef.current = null;
     }
 
     setIsLoading(false);
@@ -442,14 +457,28 @@ function App() {
     // ----------------------------------------------------
     // ⭐️ 모델을 왼쪽으로 옮기는 함수 ⭐️ (사용자 요청 함수 1)
     // ----------------------------------------------------
-    function animateModelLeftShift(duration = 1.5) {
-      const targetOffsetX = window.innerWidth * detail_offsetX;
-      const targetOffsetY = window.innerHeight * detail_offsetY;
+    function animateModelLeftShift(level2Id, duration = 1.5) {
+      const camera = cameraRef.current;
+      const renderer = rendererRef.current;
+      if (!camera || !renderer) return;
+
+      // 1. targetViews2에서 해당 ID의 오프셋 설정을 가져옵니다.
+      const viewSettings = targetViews2[level2Id];
+
+      // 2. 설정값이 있으면 사용하고, 없으면 컴포넌트 상단의 기본 detail_offset 값을 사용합니다.
+      const targetXFactor = viewSettings?.detail_offsetX ?? detail_offsetX;
+      const targetYFactor = viewSettings?.detail_offsetY ?? detail_offsetY;
+
+      const targetOffsetX = window.innerWidth * targetXFactor;
+      const targetOffsetY = window.innerHeight * targetYFactor;
+
       const bottomEL = bottomContainerRef.current;
+
       animateViewOffset(targetOffsetX, targetOffsetY, duration);
-
-
     }
+
+
+
 
     function animateUIForDetailView(duration = 1.2) {
       const titleEl = titleContainerRef.current;
@@ -490,7 +519,9 @@ function App() {
     }
 
     //회전 OFF
-    function animateToHotspot(targetPosition) {
+    // animateToHotspot 내부의 호출부 수정
+    function animateToHotspot(hotspotData) { // 인자를 data 객체로 받게 변경하면 편리합니다.
+      const { position, level2Id } = hotspotData;
       const camera = cameraRef.current;
       const controls = controlsRef.current;
       const model = modelRef.current;
@@ -498,21 +529,16 @@ function App() {
       if (!camera || !controls || !model) return;
 
       const duration = 1.2;
-
       controls.enabled = false;
 
-      const worldTarget = new THREE.Vector3().copy(targetPosition).applyMatrix4(model.matrixWorld);
-
+      const worldTarget = new THREE.Vector3().copy(position).applyMatrix4(model.matrixWorld);
       const currentToCamera = new THREE.Vector3().subVectors(camera.position, controls.target);
-
       const newControlsTarget = worldTarget;
-
-      const targetZoomDistance = 0.3;
+      const targetZoomDistance = 0.45;
 
       const newCameraPosition = new THREE.Vector3()
         .copy(newControlsTarget)
         .add(currentToCamera.normalize().multiplyScalar(targetZoomDistance));
-
 
       gsap.to(controls.target, {
         duration: duration,
@@ -533,12 +559,13 @@ function App() {
           controls.update();
         },
         onComplete: () => {
-          controls.update(); 
+          controls.update();
           controls.enabled = true;
         }
       });
 
-      animateModelLeftShift(duration);
+      // ⭐️ 여기서 level2Id를 넘겨줍니다.
+      animateModelLeftShift(level2Id, duration);
     }
     //회전 OFF END
 
@@ -565,25 +592,17 @@ function App() {
     }
 
     function handleHotspotClick(level2Id) {
-      //console.log(`Hotspot clicked: ${level2Id}`);
-
       const hotspotData = hotspotsData.find(h => h.level2Id === level2Id);
 
       if (hotspotData) {
-        hotspots.forEach(h => h.element?.classList.remove('active')); // 👈 이 코드를 유지합니다.
+        hotspots.forEach(h => h.element?.classList.remove('active'));
 
-        animateToHotspot(hotspotData.position);
+        // ⭐️ hotspotData 전체를 넘깁니다.
+        animateToHotspot(hotspotData);
 
-        if (controlsRef.current) {
-          //controlsRef.current.enabled = false; // Controls 비활성화
-        }
-
-        animateUIForDetailView(1.2); 
-        setIsDetailView(true); 
-        setSelectedHotspot(hotspotData); 
-
-      } else {
-        //console.warn(`Error: targetViews에 level2Id '${level2Id}'에 대한 데이터가 없습니다.`);
+        animateUIForDetailView(1.2);
+        setIsDetailView(true);
+        setSelectedHotspot(hotspotData);
       }
     }
 
@@ -632,7 +651,7 @@ function App() {
       const width = window.innerWidth;
       const height = window.innerHeight;
 
-      const isPortrait = height > width; 
+      const isPortrait = height > width;
       setIsMobileRatio(isPortrait);
 
       const closest = findClosestRatio(width / height);
@@ -656,7 +675,7 @@ function App() {
 
       const camera = cameraRef.current;
       const renderer = rendererRef.current;
-      const controls = controlsRef.current; 
+      const controls = controlsRef.current;
 
       if (camera && renderer && controls) {
         camera.aspect = width / height;
@@ -708,7 +727,7 @@ function App() {
 
       // }
 
-      const dt = 1/60; // 초당 60프레임 (THREE.Clock의 delta를 사용하는 것이 더 정확하지만, 기존 로직 유지를 위해 dt 사용)
+      const dt = 1 / 60; // 초당 60프레임 (THREE.Clock의 delta를 사용하는 것이 더 정확하지만, 기존 로직 유지를 위해 dt 사용)
       animationMixersRef.current.forEach(mixer => {
         let time = mixer.time + dt;
         mixer.setTime(time);
@@ -730,13 +749,13 @@ function App() {
 
       setTimeout(function () {
         requestAnimationFrame(animate);
-      }, 1000 /60);
+      }, 1000 / 60);
     }
 
     // 모델 로드 함수 (이하 동일)
     function loadModel() {
       // 로드해야 할 모든 모델 URL 배열
-      const modelUrls = [MODEL_URL, MODEL_URL2, MODEL_URL3, MODEL_URL4, MODEL_URL5, MODEL_URL6, MODEL_URL7, MODEL_URL8, MODEL_URL9, MODEL_URL10];
+      const modelUrls = [MODEL_URL, MODEL_URL2, MODEL_URL3, MODEL_URL4, MODEL_URL5, MODEL_URL6, MODEL_URL7, MODEL_URL8, MODEL_URL9, MODEL_URL10, MODEL_URL11];
       const gltfLoader = new GLTFLoader();
 
       if (isLoadingRef.current) {
@@ -820,7 +839,7 @@ function App() {
               // 전체 진행률을 계산하려면, 이 로직을 변경하여 모든 모델의 xhr.loaded / xhr.total을 합산해야 합니다.
               // 간단하게는 마지막 모델의 진행률만 표시하거나, 아래처럼 표시합니다.
               const percent = Math.round((xhr.loaded / xhr.total) * 100);
-              
+
             },
 
             // 에러 처리
@@ -1043,7 +1062,7 @@ function App() {
         rendererRef.current.dispose();
       }
 
-      
+
     };
   }, []); // ⭐️ 복원: 의존성 배열을 빈 배열 `[]`로 유지합니다.
 
@@ -1089,27 +1108,27 @@ function App() {
               }}
             >
               <img
-              src="/images/icon_mobile_warning.png"
-              alt=""
-              style={{
-                width: '20%',
-                height: 'auto',
-                pointerEvents: "none",
+                src="/images/icon_mobile_warning.png"
+                alt=""
+                style={{
+                  width: '20%',
+                  height: 'auto',
+                  pointerEvents: "none",
 
-              }}
-            />
+                }}
+              />
               <div
                 style={{
                   fontSize: `clamp(10px, 4.0vw, 20px)`,
                   fontWeight: '500',
-                  lineHeight : '150%',
+                  lineHeight: '150%',
                   color: '#323539',
                   marginBottom: `clamp(10px, 5.3vw, 20px)`,
                 }}
               >
                 현재 서비스는 모바일 환경을 지원하지 않습니다.<br />이용을 원하시면 PC에서 접속해 주세요.
               </div>
-              
+
               <button
                 onClick={() => setIsMobileRatio(false)} // '확인' 버튼 클릭 시 팝업 닫기 (선택적)
                 style={{
@@ -1242,8 +1261,8 @@ function App() {
             transformOrigin: 'bottom right',
             display: 'flex',
             flexDirection: 'column',
-            bottom: '36px',
-            right : '72px',
+            bottom: '47px',
+            right: '72px',
             position: 'absolute',
             userSelect: 'none',
             pointerEvents: 'none',
@@ -1253,7 +1272,7 @@ function App() {
           }}
         >
           <div id="guide-image3"
-            
+
             style={{
               transformOrigin: 'bottom right',
               zIndex: '5',
@@ -1345,8 +1364,9 @@ function App() {
                 color: 'white',
               }}
             >
-              환경을 이롭게<br />
-              지속 가능한 미래를 위해
+              ㈜네오에코의<br />
+              NE Series를 만나보세요!
+
             </div>
 
             <div id="title-2"
@@ -1359,12 +1379,12 @@ function App() {
                 lineHeight: '150%',
                 letterSpacing: '-0.04em',
                 position: 'absolute',
-                color: '#CFD7FC',
+                color: 'white',
                 top: '517px',
                 left: '56px',
               }}
             >
-              ㈜네오에코의 NE Series를 만나보세요!
+              환경을 이롭게 지속 가능한 미래를 위해
             </div>
 
             <div id="title-3"
@@ -1468,7 +1488,7 @@ function App() {
           >
             <div className="right-panel-content"
               style={{
-                padding: `${32 * ratio}px 24px 64px 24px`,
+                padding: `${32 * ratio}px 24px 32px 24px`,
                 color: 'black',
                 height: '100%',
                 overflowY: 'auto',
@@ -1522,18 +1542,18 @@ function App() {
                   )}
                   {targetDetail[selectedHotspot.level2Id].detail2 && (
                     <div
-                    style={{
-                      fontSize: '16px',
-                      fontFamily: 'Pretendard',
-                      fontWeight: '400',
-                      whiteSpace: 'pre-line',
-                      margin: '0',
-                      lineHeight: '150%',
-                      letterSpacing: '-0.64px'
-                    }}
-                  >
-                    {targetDetail[selectedHotspot.level2Id].detail2}
-                  </div>
+                      style={{
+                        fontSize: '16px',
+                        fontFamily: 'Pretendard',
+                        fontWeight: '400',
+                        whiteSpace: 'pre-line',
+                        margin: '0',
+                        lineHeight: '150%',
+                        letterSpacing: '-0.64px'
+                      }}
+                    >
+                      {targetDetail[selectedHotspot.level2Id].detail2}
+                    </div>
                   )}
                   {targetDetail[selectedHotspot.level2Id].src2 && (
                     <img
@@ -1542,6 +1562,31 @@ function App() {
                       style={{ width: '100%', height: 'auto', marginTop: '24px', }}
                     />
                   )}
+                  <div
+                    
+                    style={{
+                      fontSize: '16px',
+                      fontFamily: 'Pretendard',
+                      fontWeight: '400',
+                      whiteSpace: 'pre-line',
+                      margin: '0',
+                      lineHeight: '150%',
+                      letterSpacing: '-0.64px',
+                      
+
+                    }}
+                  >
+                    <button 
+                    onClick={() => handleDetailViewClose()}
+                    style={{ marginTop: '24px', backgroundColor : 'white', paddingLeft : '0', paddingTop : '0', paddingBottom : '0',}}>
+                      <img
+                      src={'images/icon_arrow.png'}
+
+                      style={{ width: '16px', height: '16px', verticalAlign: 'middle', marginRight : '4px', color : '#0068E0' }}
+                    />
+                        <span style={{ color : '#0068E0', verticalAlign: 'middle' }}>전체 화면으로</span>
+                      </button>
+                  </div>
                 </>
               )}
 
