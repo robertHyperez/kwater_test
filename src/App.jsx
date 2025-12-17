@@ -44,7 +44,7 @@ const targetViews = {
 //kys
 const targetViews2 = {
   // level2Id: { radius: Number, phi: Number (deg), theta: Number (deg) }
-  '1-1': { detail_offsetX: 0.03, detail_offsetY: 0.05, }, // 제어반 예시
+  '1-1': { detail_offsetX: 0.05, detail_offsetY: 0.05, }, // 제어반 예시
   '1-2': { detail_offsetX: 0.03, detail_offsetY: 0.13, }, // 유량계 예시
   '1-3': { detail_offsetX: -0.03, detail_offsetY: 0.11, }, // 정류기 예시
   '2-1': { detail_offsetX: 0.03, detail_offsetY: -0.18, }, // 전해조 예시
@@ -1353,10 +1353,10 @@ function App() {
             <div id="title-1"
               style={{
                 transformOrigin: 'top left',
-                fontSize: '60px',
+                fontSize: '58px',
                 fontFamily: 'Pretendard',
                 fontWeight: '700',
-                lineHeight: '146%',
+                lineHeight: '140%',
                 letterSpacing: '-0.05em',
                 position: 'absolute',
                 top: '317px',
@@ -1373,14 +1373,14 @@ function App() {
               style={{
                 transformOrigin: 'top left',
                 letterSpacing: '-3.794px',
-                fontSize: '28px',
+                fontSize: '27px',
                 fontFamily: 'Pretendard',
                 fontWeight: '600',
                 lineHeight: '150%',
                 letterSpacing: '-0.04em',
                 position: 'absolute',
                 color: 'white',
-                top: '517px',
+                top: '496px',
                 left: '56px',
               }}
             >
@@ -1391,14 +1391,14 @@ function App() {
               style={{
                 transformOrigin: 'top left',
                 letterSpacing: '-3.794px',
-                fontSize: '22px',
+                fontSize: '20px',
                 fontFamily: 'Pretendard',
                 fontWeight: '500',
                 lineHeight: '160%',
                 letterSpacing: '-0.04em',
                 position: 'absolute',
                 color: '#CFD7FC',
-                top: '570px',
+                top: '550px',
                 left: '56px',
               }}
             >
@@ -1433,7 +1433,7 @@ function App() {
             <div id="guide-image"
               style={{
                 transformOrigin: 'top left',
-                top: '694px',
+                top: '675px',
                 left: '56px',
                 zIndex: '5',
                 width: '180.16px',
