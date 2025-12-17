@@ -64,7 +64,8 @@ const targetDetail = {
     src: '/images/펌프.png',
   },
   '3-1': {
-    detail: '폐수에 녹지 않고 입자형태로 떠다니는 오염물질들을 제거하는 장치이다. 대개 화학약품을 통해 작은 입자들을 큰 입자로 응집한 후에 침전 혹은 부상하여 필터 등으로 여과하는 방식을 사용한다.\n\n입자성 오염물질 처리장치에는 침전, 용존공기부상(DAF),\n여과장치 등이 있다.',
+    detail: '폐수에 녹지 않고 입자형태로 떠다니는 오염물질들을 제거하는 장치이다. 대개 화학약품을 통해 작은 입자들을 큰 입자로 응집한 후에 침전 혹은 부상하여 필터 등으로 여과하는 방식을 사용한다.',
+    detail2 : '입자성 오염물질 처리장치에는 침전, 용존공기부상(DAF),\n여과장치 등이 있다.',
     src: '/images/img-입자성 오염물질 처리장치.png',
     src2: '/images/입자성 처리장치 추가사진.png',
   },
@@ -1511,12 +1512,28 @@ function App() {
                   >
                     {targetDetail[selectedHotspot.level2Id].detail}
                   </div>
+
                   {targetDetail[selectedHotspot.level2Id].src && (
                     <img
                       src={targetDetail[selectedHotspot.level2Id].src}
 
                       style={{ width: '100%', height: 'auto', marginTop: '24px', borderRadius: '12px', }}
                     />
+                  )}
+                  {targetDetail[selectedHotspot.level2Id].detail2 && (
+                    <div
+                    style={{
+                      fontSize: '16px',
+                      fontFamily: 'Pretendard',
+                      fontWeight: '400',
+                      whiteSpace: 'pre-line',
+                      margin: '0',
+                      lineHeight: '150%',
+                      letterSpacing: '-0.64px'
+                    }}
+                  >
+                    {targetDetail[selectedHotspot.level2Id].detail2}
+                  </div>
                   )}
                   {targetDetail[selectedHotspot.level2Id].src2 && (
                     <img
