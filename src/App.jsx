@@ -44,13 +44,13 @@ const targetViews = {
 //kys
 const targetViews2 = {
   // level2Id: { radius: Number, phi: Number (deg), theta: Number (deg) }
-  '1-1': { detail_offsetX: 0.03, detail_offsetY: 0.1, }, // 제어반 예시
-  '1-2': { detail_offsetX: 0.03, detail_offsetY: 0.1, }, // 유량계 예시
-  '1-3': { detail_offsetX: 0.03, detail_offsetY: 0.1, }, // 정류기 예시
-  '2-1': { detail_offsetX: 0.03, detail_offsetY: -0.1, }, // 전해조 예시
-  '2-2': { detail_offsetX: 0.03, detail_offsetY: -0.1, }, // 펌프 예시
-  '3-1': { detail_offsetX: 0.2, detail_offsetY: -0.1, }, // 원점 예시
-  '3-2': { detail_offsetX: -0.1, detail_offsetY: 0.1, }, // 처리수
+  '1-1': { detail_offsetX: 0.03, detail_offsetY: 0.05, }, // 제어반 예시
+  '1-2': { detail_offsetX: 0.03, detail_offsetY: 0.13, }, // 유량계 예시
+  '1-3': { detail_offsetX: -0.03, detail_offsetY: 0.11, }, // 정류기 예시
+  '2-1': { detail_offsetX: 0.03, detail_offsetY: -0.18, }, // 전해조 예시
+  '2-2': { detail_offsetX: 0.03, detail_offsetY: -0.18, }, // 펌프 예시
+  '3-1': { detail_offsetX: 0.25, detail_offsetY: -0.1, }, // 입자성 오염물질
+  '3-2': { detail_offsetX: -0.13, detail_offsetY: 0.1, }, // 처리수
 };
 
 const targetDetail = {
@@ -534,7 +534,7 @@ function App() {
       const worldTarget = new THREE.Vector3().copy(position).applyMatrix4(model.matrixWorld);
       const currentToCamera = new THREE.Vector3().subVectors(camera.position, controls.target);
       const newControlsTarget = worldTarget;
-      const targetZoomDistance = 0.45;
+      const targetZoomDistance = 0.5;
 
       const newCameraPosition = new THREE.Vector3()
         .copy(newControlsTarget)
@@ -1580,7 +1580,7 @@ function App() {
                     onClick={() => handleDetailViewClose()}
                     style={{ marginTop: '24px', backgroundColor : 'white', paddingLeft : '0', paddingTop : '0', paddingBottom : '0',}}>
                       <img
-                      src={'images/icon_arrow.png'}
+                      src={'images/icon_arrow.svg'}
 
                       style={{ width: '16px', height: '16px', verticalAlign: 'middle', marginRight : '4px', color : '#0068E0' }}
                     />
