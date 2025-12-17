@@ -19,13 +19,13 @@ import { clamp } from 'three/src/math/MathUtils.js';
 
 const hotspotsData = [
   // 3D 좌표는 이전 프로젝트에서 가져온 데이터를 사용했습니다.
-  { id: 'hotspot-1-1', level2Id: '1-1', label: '제어반', position: new THREE.Vector3(1.722459943, 2.741464162, 1.826513382) },
-  { id: 'hotspot-1-2', level2Id: '1-2', label: '유량계', position: new THREE.Vector3(2.352759922, 2.940494464, 1.268134725) },
-  { id: 'hotspot-1-3', level2Id: '1-3', label: '정류기', position: new THREE.Vector3(3.338999889, 2.791274238, 1.341697484) },
-  { id: 'hotspot-2-1', level2Id: '2-1', label: '전해조', position: new THREE.Vector3(2.508639917, 1.02077155, 1.232338784) },
-  { id: 'hotspot-2-2', level2Id: '2-2', label: '펌프', position: new THREE.Vector3(0.2125399929, 0.7042710693, 0.5778873445) },
-  { id: 'hotspot-3-1', level2Id: '3-1', label: '입자성 오염물질 처리장치', position: new THREE.Vector3(-2.619579913, 0.7285911062, 0.1746977963) },
-  { id: 'hotspot-3-2', level2Id: '3-2', label: '처리수', position: new THREE.Vector3(4.648379845	,2.17993331	,0.5868613408) },
+  { id: 'hotspot-1-1', level2Id: '1-1', label: '제어반', label2: '제어반', position: new THREE.Vector3(1.722459943, 2.741464162, 1.826513382) },
+  { id: 'hotspot-1-2', level2Id: '1-2', label: '유량계', label2: '유량계', position: new THREE.Vector3(2.352759922, 2.940494464, 1.268134725) },
+  { id: 'hotspot-1-3', level2Id: '1-3', label: '정류기', label2: '정류기', position: new THREE.Vector3(3.338999889, 2.791274238, 1.341697484) },
+  { id: 'hotspot-2-1', level2Id: '2-1', label: '전해조', label2: '전해조', position: new THREE.Vector3(2.508639917, 1.02077155, 1.232338784) },
+  { id: 'hotspot-2-2', level2Id: '2-2', label: '펌프',  label2: '펌프', position: new THREE.Vector3(0.2125399929, 0.7042710693, 0.5778873445) },
+  { id: 'hotspot-3-1', level2Id: '3-1', label: '입자성 오염물질 처리장치', label2: '입자성 오염물질 처리장치(응집, 여과)', position: new THREE.Vector3(-2.619579913, 0.7285911062, 0.1746977963) },
+  { id: 'hotspot-3-2', level2Id: '3-2', label: '처리수', label2: '처리수', position: new THREE.Vector3(4.648379845	,2.17993331	,0.5868613408) },
   //{ id: 'hotspot-3-1', level2Id: '3-1', label: '원점', position: new THREE.Vector3(0, 0, 0) },
 
 ];
@@ -44,15 +44,15 @@ const targetViews = {
 const targetDetail = {
   // 제어반 예시
   '1-1': {
-    detail: '처리장치 전체의 상황을 모니터링하고 조절하는\n부분으로 기본적으로 장치에 유입, 배출되는 유량과\n전해조에 인가되고 있는 전압, 전류를 확인할 수 있다.\n\n또한 센서를 추가설치하고 IoT 시스템을 이용하여\n유입수/처리수의 온도, pH, 전기전도도 및 현장 영상\n등을 확인할 수 있다.',
+    detail: '처리장치 전체의 상황을 모니터링하고 조절하는 부분으로\n기본적으로 장치에 유입, 배출되는 유량과 전해조에 인가되고 있는 전압, 전류를 확인할 수 있다.\n\n또한 센서를 추가설치하고 IoT 시스템을 이용하여 유입수/처리수의 온도, pH, 전기전도도 및 현장 영상 등을 확인할 수 있다.',
     src: '/images/제어반.png',
   },
   '1-2': {
-    detail: '처리장치로 유입되는 공정수 유량을 측정하여\n전체공정을 안정적으로 운전하는 역할을\n수행한다.',
+    detail: '처리장치로 유입되는 공정수 유량을 측정하여\n전체공정을 안정적으로 운전하는 역할을 수행한다.',
     src: '/images/유량계.png',
   },
   '1-3': {
-    detail: '교류전기를 직류전기로 변환하는 장치이다.\n\n전해조가 안정적인 전기화학적 반응을 일으키기 위해\n필요한 일정한 직류 전기를 공급하는 역할을 한다.',
+    detail: '교류전기를 직류전기로 변환하는 장치이다.\n\n전해조가 안정적인 전기화학적 반응을 일으키기 위해 필요한\n일정한 직류 전기를 공급하는 역할을 한다.',
     src: '/images/정류기.png',
   },
   '2-1': {
@@ -60,7 +60,7 @@ const targetDetail = {
     src: '/images/img-전해조.png',
   },
   '2-2': {
-    detail: '처리장치로 공정수나 폐수를 유입시키는 역할을 수행한다.',
+    detail: '처리장치로 공정수나 폐수를 유입시키는 역할을\n수행한다.',
     src: '/images/펌프.png',
   },
   '3-1': {
@@ -1261,7 +1261,7 @@ function App() {
             }}
           >
             <img
-              src="/images/범례.png"
+              src="/images/범례.svg"
               alt=""
               style={{
                 width: '296px',
@@ -1486,7 +1486,7 @@ function App() {
                   placeSelf: 'center',
                   margin: '0px 0px 22px 0px',
                 }}
-              >{selectedHotspot?.label || '선택된 항목'}</div>
+              >{selectedHotspot?.label2 || '선택된 항목'}</div>
 
               <div
                 style={{
