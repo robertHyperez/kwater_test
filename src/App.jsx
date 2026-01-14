@@ -7,6 +7,7 @@ import lottie from 'lottie-web';
 import loadingUrl from '/loading.json?url';
 import gsap from 'gsap';
 import { clamp } from 'three/src/math/MathUtils.js';
+import jsQR from 'jsqr';
 
 
 
