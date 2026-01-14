@@ -159,6 +159,7 @@ function App() {
   };
 
   const handleCameraClick = async () => {
+    setIsMobileRatio(false)
     if (isCameraOpen) {
       stopCamera();
       return;
