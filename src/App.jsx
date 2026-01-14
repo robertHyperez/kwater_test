@@ -112,31 +112,81 @@ function App() {
   // 1. STATE & REFS
   // ------------------------------------
   const videoRef = useRef(null);
-const [isCameraOpen, setIsCameraOpen] = useState(false);
-const handleCameraClick = async () => {
-   setIsMobileRatio(false)
-  if (isCameraOpen) {
-    // 이미 켜져있다면 끄기
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+
+  // QR 스캔 루프를 위한 ref
+  const requestRef = useRef();
+
+
+  const scanQRCode = () => {
+    const video = videoRef.current;
+    if (video && video.readyState === video.HAVE_ENOUGH_DATA) {
+      // 캔버스를 생성해 비디오 프레임을 캡처 (화면에는 안 보임)
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      // jsQR로 데이터 분석
+      const code = jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: "dontInvert",
+      });
+
+      if (code) {
+        console.log("QR 코드 인식 성공:", code.data);
+        alert("인식된 QR 내용: " + code.data);
+        
+        // 특정 URL이나 데이터에 따라 동작 처리 (예: 특정 핫스팟으로 이동)
+        // if(code.data.includes('hotspot-1-1')) handleHotspotClick('1-1');
+
+        // 인식 성공 후 카메라 끄기 (선택 사항)
+        stopCamera();
+        return;
+      }
+    }
+    // 다음 프레임 예약
+    requestRef.current = requestAnimationFrame(scanQRCode);
+  };
+
+  const stopCamera = () => {
     const tracks = videoRef.current?.srcObject?.getTracks();
     tracks?.forEach(track => track.stop());
     setIsCameraOpen(false);
-    return;
-  }
+    cancelAnimationFrame(requestRef.current);
+  };
 
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment' } // QR 코드용이므로 후면 카메라
-    });
-
-    if (videoRef.current) {
-      videoRef.current.srcObject = stream;
-      setIsCameraOpen(true);
+  const handleCameraClick = async () => {
+    if (isCameraOpen) {
+      stopCamera();
+      return;
     }
-  } catch (err) {
-    console.error("카메라 에러:", err);
-    alert("카메라를 실행할 수 없습니다. 권한을 확인해주세요.");
-  }
-};
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' }
+      });
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setIsCameraOpen(true);
+        // 비디오 재생 시작 후 스캔 루프 시작
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current.play();
+          requestRef.current = requestAnimationFrame(scanQRCode);
+        };
+      }
+    } catch (err) {
+      console.error("카메라 에러:", err);
+      alert("카메라 권한이 필요합니다.");
+    }
+  };
+
+  // 컴포넌트 언마운트 시 애니메이션 정지
+  useEffect(() => {
+    return () => cancelAnimationFrame(requestRef.current);
+  }, []);
 
   const loaderRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
