@@ -114,6 +114,7 @@ function App() {
   const videoRef = useRef(null);
 const [isCameraOpen, setIsCameraOpen] = useState(false);
 const handleCameraClick = async () => {
+   setIsMobileRatio(false)
   if (isCameraOpen) {
     // 이미 켜져있다면 끄기
     const tracks = videoRef.current?.srcObject?.getTracks();
