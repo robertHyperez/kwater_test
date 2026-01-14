@@ -17,6 +17,7 @@ import { clamp } from 'three/src/math/MathUtils.js';
 // 1. 핫스팟 데이터 (THREE.Vector3 위치)
 // ===============================================
 
+
 const hotspotsData = [
   // 3D 좌표는 이전 프로젝트에서 가져온 데이터를 사용했습니다.
   { id: 'hotspot-1-1', level2Id: '1-1', label: '제어반', label2: '제어반', position: new THREE.Vector3(1.722459943, 2.741464162, 1.826513382) },
@@ -110,6 +111,32 @@ function App() {
   // ------------------------------------
   // 1. STATE & REFS
   // ------------------------------------
+  const videoRef = useRef(null);
+const [isCameraOpen, setIsCameraOpen] = useState(false);
+const handleCameraClick = async () => {
+  if (isCameraOpen) {
+    // 이미 켜져있다면 끄기
+    const tracks = videoRef.current?.srcObject?.getTracks();
+    tracks?.forEach(track => track.stop());
+    setIsCameraOpen(false);
+    return;
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' } // QR 코드용이므로 후면 카메라
+    });
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = stream;
+      setIsCameraOpen(true);
+    }
+  } catch (err) {
+    console.error("카메라 에러:", err);
+    alert("카메라를 실행할 수 없습니다. 권한을 확인해주세요.");
+  }
+};
+
   const loaderRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -1072,6 +1099,61 @@ function App() {
   // ------------------------------------
   return (
     <>
+
+      <div className="audio-player-container" style={{
+        position: 'sticky',
+        bottom: '0',
+        width: '100%',
+        backgroundColor: '#6B6B6B',
+        borderRadius: '20px 20px 0 0',
+        padding: `${20 * ratio}px`,
+        display: 'flex',
+        flexDirection: 'column', // 진행바 추가를 위해 column으로 변경 가능
+        gap: '10px',
+        color: 'white',
+        marginTop: '40px',
+        zIndex: 10
+      }}>
+
+        <button
+          onClick={handleCameraClick}
+          style={{
+            background: 'rgba(255,0,0,1)',
+            border: 'none',
+            borderRadius: '50%',
+            width: '40px',
+            height: '40px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            right: '20px',
+            position: 'absolute',
+            bottom: '140px',
+
+          }}
+        >
+          {/* 요청하신 사각형 안의 이퀄라이저/카메라 아이콘 형태 SVG */}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="7" y1="12" x2="17" y2="12"></line>
+            <line x1="7" y1="8" x2="17" y2="8"></line>
+            <line x1="7" y1="16" x2="17" y2="16"></line>
+          </svg>
+          777777777777777777777
+        </button>
+
+        <div style={{ width: '100%', maxWidth: '400px', margin: '0 auto', overflow: 'hidden', borderRadius: '12px' }}>
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            style={{ width: '100%', display: isCameraOpen ? 'block' : 'none', backgroundColor: '#000' }}
+          />
+        </div>
+
+
+      </div>
       <div className="container"
         style={{
           '--hotspot-scale': Math.max(ratio, 0.5) * 1.3,
@@ -1131,7 +1213,8 @@ function App() {
               </div>
 
               <button
-                onClick={() => setIsMobileRatio(false)} // '확인' 버튼 클릭 시 팝업 닫기 (선택적)
+                //onClick={() => setIsMobileRatio(false)} // '확인' 버튼 클릭 시 팝업 닫기 (선택적)
+                onClick={handleCameraClick}
                 style={{
                   width: '40%',
                   padding: '12px',
@@ -1462,7 +1545,7 @@ function App() {
           style={{
             position: 'absolute',
             //top: '7.96vh',
-            top : '52px',
+            top: '52px',
             right: '72px',
             transform: `scale(${ratio / 1.0})`,
             transformOrigin: 'right top',
@@ -1565,7 +1648,7 @@ function App() {
                     />
                   )}
                   <div
-                    
+
                     style={{
                       fontSize: '16px',
                       fontFamily: 'Pretendard',
@@ -1574,20 +1657,20 @@ function App() {
                       margin: '0',
                       lineHeight: '150%',
                       letterSpacing: '-0.64px',
-                      
+
 
                     }}
                   >
-                    <button 
-                    onClick={() => handleDetailViewClose()}
-                    style={{ marginTop: '12px', backgroundColor : 'white', paddingLeft : '0', paddingTop : '0', paddingBottom : '0',}}>
+                    <button
+                      onClick={() => handleDetailViewClose()}
+                      style={{ marginTop: '12px', backgroundColor: 'white', paddingLeft: '0', paddingTop: '0', paddingBottom: '0', }}>
                       <img
-                      src={'images/icon_arrow.svg'}
+                        src={'images/icon_arrow.svg'}
 
-                      style={{ width: '16px', height: '16px', verticalAlign: 'middle', marginRight : '4px', color : '#0068E0' }}
-                    />
-                        <span style={{ color : '#0068E0', verticalAlign: 'middle' }}>전체 화면으로</span>
-                      </button>
+                        style={{ width: '16px', height: '16px', verticalAlign: 'middle', marginRight: '4px', color: '#0068E0' }}
+                      />
+                      <span style={{ color: '#0068E0', verticalAlign: 'middle' }}>전체 화면으로</span>
+                    </button>
                   </div>
                 </>
               )}
